@@ -9,6 +9,7 @@ export default function Progress({completedThings}) {
                 <div>games: {completedThings.Games}</div>
                 <div>books: {completedThings.Books}</div>
                 <div>courses: {completedThings.Courses}</div>
+                
             </Card>
         </Box>
     );
