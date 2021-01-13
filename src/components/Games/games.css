@@ -17,8 +17,8 @@
     border-radius: 12px;
     position: relative;
 }
-.game>* :not("row"){
-    margin: 2%;
+.game input{
+    margin: 2% 0 2% 0;
 }
 
 .exit{
