@@ -1,0 +1,25 @@
+.course{
+    border: 2px solid black;
+    border-radius: 12px;
+    background-color: rgb(238, 243, 171);
+    margin-bottom: 8px;
+    padding: 10px 6px 10px 6px;
+    height: 40vh;
+    position: relative;
+}
+
+.course>h3{
+    margin: 0;
+}
+
+.course>a{
+    text-decoration: none;
+    color: rgb(190, 5, 5);
+}
+
+.completed{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border-radius: 4px;
+}

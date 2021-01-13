@@ -1,3 +1,28 @@
 .App {
   text-align: center;
 }
+.center{
+  text-align: center;
+}
+
+.flex{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.category{
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid black;
+  height: 7vh;
+  font-size: large;
+  border-radius: 4px;
+}
+
+.category:hover{
+  background-color: rgb(48, 44, 44);
+  color: wheat;
+  transition: 1s;
+}

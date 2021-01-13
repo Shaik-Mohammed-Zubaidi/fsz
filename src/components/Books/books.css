@@ -1,0 +1,27 @@
+.book{
+    width: 60%;
+    border: 2px solid black;
+    border-radius: 12px;
+    background-color: rgb(213, 226, 231);
+    margin-bottom: 8px;
+    padding: 10px 6px 10px 6px;
+}
+
+.book>h3{
+    margin: 0;
+}
+
+.book a{
+    text-decoration: none;
+}
+
+.link-container{
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid grey;
+}
+.link-container>p{
+    margin: 0;
+    margin-right: 8px;
+}
