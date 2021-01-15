@@ -7,6 +7,14 @@
     background-color: blue;
     color: white;
     border-radius: 8px;
+    position: relative;
+}
+
+.played{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border-radius: 4px;
 }
 
 .game{

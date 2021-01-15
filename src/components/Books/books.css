@@ -5,6 +5,14 @@
     background-color: rgb(213, 226, 231);
     margin-bottom: 8px;
     padding: 10px 6px 10px 6px;
+    position: relative;
+}
+
+.read{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border-radius: 4px;
 }
 
 .book>h3{

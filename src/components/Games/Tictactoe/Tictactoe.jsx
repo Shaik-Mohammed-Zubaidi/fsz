@@ -1,16 +1,30 @@
 import { useState } from "react";
 import { handleTicks } from "./utils";
 import './tictactoe.css';
+import { connect } from "react-redux";
+import {incrementGames,decrementGames} from '../../../redux/actionCreator';
 
-const Tictactoe = () =>{
+const Tictactoe = ({incrementGames,decrementGames}) =>{
     const [isStarted,setIsStarted]= useState(false);
     const [pl1Input,setPl1Input] = useState("");
     const [pl2Input,setPl2Input] = useState("");
     const [currPlayer,setCurrPlayer] = useState(1);
     const [board,setBoard] = useState(new Array(3).fill("").map(() => new Array(3).fill("")));
+    const [isPlayed, setIsPlayed] = useState(false);
     
+    const handlePlayed = () =>{
+        if(isPlayed){
+            decrementGames();
+        }
+        else{
+            incrementGames();
+        }
+        setIsPlayed(prevState => !prevState);
+    }
+
     return (
         <div className="game-container flex" >
+            <button className="played" onClick={handlePlayed}>{isPlayed? "Played" : "Not Played" }</button>
             <h3 style={{margin: "5px"}}>Tic Tac Toe</h3>
             <div className="game flex">
                 {!isStarted ? <>
@@ -30,4 +44,7 @@ const Tictactoe = () =>{
     );
 };
 
-export default Tictactoe;
+export default connect(null,{
+    incrementGames,
+    decrementGames
+})(Tictactoe);

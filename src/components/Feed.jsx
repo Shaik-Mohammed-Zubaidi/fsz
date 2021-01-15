@@ -4,7 +4,7 @@ import Games from "./Games/Games";
 import Books from "./Books/Books";
 import Courses from "./Courses/Courses";
 
-export default function Feed({ category,markCompleted }) {
+export default function Feed({ category }) {
 
   const renderCategoryPage = (category) =>{
     switch (category) {
@@ -13,7 +13,7 @@ export default function Feed({ category,markCompleted }) {
       case "Books":
         return <Books />;
       case "Courses":
-        return <Courses markCompleted={markCompleted} />;
+        return <Courses />;
       default:
         return <></>;
     }

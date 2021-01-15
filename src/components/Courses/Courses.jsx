@@ -1,7 +1,7 @@
 import Course from './Course';
 import './courses.css';
 
-const Courses = ({markCompleted}) =>{
+const Courses = () =>{
     const coursesList = [
         {
           title: "Redux Tutorial",
@@ -65,7 +65,7 @@ const Courses = ({markCompleted}) =>{
         },];
     return (
         <div>
-            {coursesList.map((course,i)=><Course key={course.title+i} course={course} markCompleted={markCompleted} />)}
+            {coursesList.map((course,i)=><Course key={course.title+i} course={course} />)}
         </div>
     );
 };
