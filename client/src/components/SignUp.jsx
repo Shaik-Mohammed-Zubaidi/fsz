@@ -7,13 +7,13 @@ import TextField from '@material-ui/core/TextField';
 // import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-// import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { loginTheUser } from '../redux/authorization/actionCreator';
+import Validator from 'validator';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SignUp({loginTheUser}) {
+function SignUp(props) {
+    const {loginTheUser,isLoggedIn} = props;
+
     const classes = useStyles();
     const [fname,setFname]= useState("");
     const [lname,setLname]= useState("");
@@ -47,21 +49,32 @@ function SignUp({loginTheUser}) {
         return;
     }
 
-    const handleSignUp = (e) =>{
-        e.preventDefault();
-        if(!email.includes("@") || !email.includes(".com")){
+    const isValid = () =>{
+        if(!Validator.isEmail(email)){
             setErrorMessage("Provide correct email");
-            return;
+            return false;
         }
         if(pass.length<6){
             setErrorMessage("Password must be atleast 6 letters");
-            return;
+            return false;
         }
         setErrorMessage("");
+        return true;
+    }
+
+    const handleSignUp = (e) =>{
+        e.preventDefault();
+        if(!isValid()){
+            return;
+        }
         createAccount().then(_=>{
             loginTheUser();
+            props.history.push('/home');
         });
-        return;
+    }
+
+    if(isLoggedIn){
+        props.history.push('/home');
     }
 
     return (
@@ -154,6 +167,12 @@ function SignUp({loginTheUser}) {
     );
 }
 
-export default connect(null,{
+const mapStateToProps = (state) =>{
+    return {
+        isLoggedIn: state.authorizationReducer
+    }
+}
+
+export default connect(mapStateToProps,{
     loginTheUser,
 })(SignUp);

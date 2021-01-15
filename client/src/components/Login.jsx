@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,12 +7,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
-// import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { connect } from 'react-redux';
+import {loginTheUser} from '../redux/authorization/actionCreator';
+import Validator from 'validator';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,8 +46,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login() {
+function Login(props) {
+    const {loginTheUser,isLoggedIn}= props;
     const classes = useStyles();
+    const [email,setEmail]= useState("");
+    const [pass,setPass]= useState("");
+    const [errorMessage,setErrorMessage]= useState("");
+
+    if(isLoggedIn){
+        props.history.push('/');
+    }
+
+    const isValid = () =>{
+        if(!Validator.isEmail(email)){
+            setErrorMessage("Provide correct email");
+            return false;
+        }
+        if(pass.length<6){
+            setErrorMessage("Password must be atleast 6 letters");
+            return false;
+        }
+        setErrorMessage("");
+        return true;
+    }
+
+    const verifyUser = async() =>{
+        return;
+    }
+
+    const handleLogin = (e) =>{
+        e.preventDefault();
+        if(!isValid()){
+            return;
+        }
+        verifyUser().then(_=>{
+            loginTheUser();
+            props.history.push('/home');
+        });
+    }
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -60,8 +97,10 @@ export default function Login() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} onSubmit={handleLogin} >
                         <TextField
+                            value={email}
+                            onChange={(e)=>setEmail(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -73,6 +112,8 @@ export default function Login() {
                             autoFocus
                         />
                         <TextField
+                            value={pass}
+                            onChange={(e)=>setPass(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -83,6 +124,9 @@ export default function Login() {
                             id="password"
                             autoComplete="current-password"
                         />
+                        <Typography component="div">
+                            {errorMessage}
+                        </Typography>                        
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
@@ -109,3 +153,13 @@ export default function Login() {
         </Grid>
     );
 }
+
+const mapStateToProps = (state) =>{
+    return {
+        isLoggedIn: state.authorizationReducer
+    }
+}
+
+export default connect(mapStateToProps,{
+    loginTheUser,
+})(Login);
