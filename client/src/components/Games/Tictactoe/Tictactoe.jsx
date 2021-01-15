@@ -2,7 +2,7 @@ import { useState } from "react";
 import { handleTicks } from "./utils";
 import './tictactoe.css';
 import { connect } from "react-redux";
-import {incrementGames,decrementGames} from '../../../redux/actionCreator';
+import {incrementGames,decrementGames} from '../../../redux/progress/actionCreator';
 
 const Tictactoe = ({incrementGames,decrementGames}) =>{
     const [isStarted,setIsStarted]= useState(false);

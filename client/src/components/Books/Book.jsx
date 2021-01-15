@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import {incrementBooks,decrementBooks} from '../../redux/actionCreator';
+import {incrementBooks,decrementBooks} from '../../redux/progress/actionCreator';
 
 const Book = (props) =>{
     const {book, incrementBooks, decrementBooks}= props;

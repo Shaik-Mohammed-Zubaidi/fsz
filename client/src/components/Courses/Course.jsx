@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import {incrementCourses,decrementCourses} from '../../redux/actionCreator';
+import {incrementCourses,decrementCourses} from '../../redux/progress/actionCreator';
 
 const Course = (props) =>{
     const {course,incrementCourses,decrementCourses}= props;

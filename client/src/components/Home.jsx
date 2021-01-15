@@ -4,7 +4,7 @@ import Categories from "./Categories";
 import Feed from "./Feed";
 import Progress from "./Progress";
 
-export default function Home() {
+function Home() {
     const categoriesList= ["Games","Books","Courses"];
     const [category,setCategory] = useState("Games");
 
@@ -21,3 +21,4 @@ export default function Home() {
     );
 }
 
+export default Home;
