@@ -1,8 +1,8 @@
 import './App.css';
 import React from "react";
 import {Route,Switch,Redirect} from 'react-router-dom';
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
+import Login from "./authorization/Login";
+import SignUp from "./authorization/SignUp";
 import Home from './components/Home';
 
 function App() {
