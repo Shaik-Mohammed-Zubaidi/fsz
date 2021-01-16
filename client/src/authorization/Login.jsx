@@ -10,41 +10,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import {loginTheUser} from '../redux/authorization/actionCreator';
-import Validator from 'validator';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import {loginTheUser} from '../redux/authorization/actionCreator';
+import {useStyles,isValid} from './utils';
 
 function Login(props) {
     const {loginTheUser,isLoggedIn}= props;
@@ -53,36 +22,23 @@ function Login(props) {
     const [pass,setPass]= useState("");
     const [errorMessage,setErrorMessage]= useState("");
 
-    if(isLoggedIn){
-        props.history.push('/');
-    }
-
-    const isValid = () =>{
-        if(!Validator.isEmail(email)){
-            setErrorMessage("Provide correct email");
-            return false;
-        }
-        if(pass.length<6){
-            setErrorMessage("Password must be atleast 6 letters");
-            return false;
-        }
-        setErrorMessage("");
-        return true;
-    }
-
     const verifyUser = async() =>{
         return;
     }
 
     const handleLogin = (e) =>{
         e.preventDefault();
-        if(!isValid()){
+        if(!isValid(email,pass,setErrorMessage)){
             return;
         }
         verifyUser().then(_=>{
             loginTheUser();
             props.history.push('/home');
         });
+    }
+
+    if(isLoggedIn){
+        props.history.push('/home');
     }
 
     return (
