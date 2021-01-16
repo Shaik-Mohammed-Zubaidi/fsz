@@ -13,17 +13,38 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
 import {loginTheUser} from '../redux/authorization/actionCreator';
+import {setInitialState} from '../redux/progress/actionCreator';
 import {useStyles,isValid} from './utils';
+const axios= require('axios');
 
 function Login(props) {
-    const {loginTheUser,isLoggedIn}= props;
+    const {isLoggedIn,loginTheUser,setInitialState}= props;
     const classes = useStyles();
     const [email,setEmail]= useState("");
     const [pass,setPass]= useState("");
     const [errorMessage,setErrorMessage]= useState("");
 
-    const verifyUser = async() =>{
-        return;
+    const verifyUser = () =>{
+        const data= axios.get(`/api/fsz/user?email=${email}`);
+        data
+            .then(res=> {
+                let receivedUser= res.data[0];
+                if(receivedUser.password!==pass){
+                    setErrorMessage("Incorrect Password");
+                }
+                else{
+                    loginTheUser();
+                    const {Games,Books,Courses} = receivedUser.data;
+                    setInitialState({
+                        Games,
+                        Books,
+                        Courses,
+                    });
+                    sessionStorage.setItem('email',receivedUser.email);
+                    setErrorMessage("");
+                    props.history.push('/home');
+                }
+            }).catch(err=> console.log(err));
     }
 
     const handleLogin = (e) =>{
@@ -31,10 +52,7 @@ function Login(props) {
         if(!isValid(email,pass,setErrorMessage)){
             return;
         }
-        verifyUser().then(_=>{
-            loginTheUser();
-            props.history.push('/home');
-        });
+        verifyUser();
     }
 
     if(isLoggedIn){
@@ -118,4 +136,5 @@ const mapStateToProps = (state) =>{
 
 export default connect(mapStateToProps,{
     loginTheUser,
+    setInitialState,
 })(Login);

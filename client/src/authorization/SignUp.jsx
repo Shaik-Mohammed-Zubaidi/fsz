@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -14,6 +12,7 @@ import { connect } from 'react-redux';
 
 import { loginTheUser } from '../redux/authorization/actionCreator';
 import {useStyles,isValid} from './utils';
+const axios= require('axios');
 
 function SignUp(props) {
     const {loginTheUser,isLoggedIn} = props;
@@ -26,7 +25,19 @@ function SignUp(props) {
     const [errorMessage,setErrorMessage]= useState("");
 
     const createAccount = async() =>{
-        return;
+        let user= {
+            firstName: fname,
+            lastName: lname,
+            email: email,
+            password: pass,
+            data: {
+                Books: 0,
+                Games: 0,
+                Courses: 0,
+            }
+        }
+        const data= axios.post('api/fsz/user',user);
+        data.then(res=> console.log("User Created", res)).catch(err=> console.log(err));
     }
 
     const handleSignUp = (e) =>{

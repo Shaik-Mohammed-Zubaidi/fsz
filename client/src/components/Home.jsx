@@ -4,11 +4,11 @@ import Categories from "./Categories";
 import Feed from "./Feed";
 import Progress from "./Progress";
 import { connect } from 'react-redux';
-import {logoutTheUser} from '../redux/authorization/actionCreator';
 import Header from './Header';
+import Logout from '../authorization/Logout';
 
 function Home(props) {
-    const {isLoggedIn,logoutTheUser} = props;
+    const {isLoggedIn} = props;
     const categoriesList= ["Books","Games","Courses"];
     const [category,setCategory] = useState("Books");
 
@@ -18,9 +18,9 @@ function Home(props) {
 
     return (
         <div style={{position:"relative"}}>
-            <button className="signout-btn" onClick={()=>logoutTheUser()}>Sign Out</button>
             <Header />
             <Box className="home-box">
+                <Logout />
                 <Categories categoriesList={categoriesList} setCategory={setCategory} />
                 <Feed category={category}/>
                 <Progress />
@@ -35,6 +35,4 @@ const mapStateToProps = (state) =>{
     }
 }
 
-export default connect(mapStateToProps,{
-    logoutTheUser,
-})(Home);
+export default connect(mapStateToProps,null)(Home);

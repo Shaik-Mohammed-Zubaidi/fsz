@@ -8,6 +8,11 @@ const INIT_STATE= {
 
 export default function myReducer(state= INIT_STATE, action){
     switch (action.type) {
+        case actionConstants.SET_INITIAL_STATE:
+            return {
+                ...state,
+                ...action.payload,
+            };
         case actionConstants.INCREMENT_GAMES:
             return {
                 ...state,
