@@ -3,20 +3,32 @@ import {Box} from "@material-ui/core";
 import Categories from "./Categories";
 import Feed from "./Feed";
 import Progress from "./Progress";
-import { connect } from 'react-redux';
 import Header from './Header';
 import Logout from '../authorization/Logout';
+import axios from 'axios';
 
 function Home(props) {
-    const {isLoggedIn} = props;
     const categoriesList= ["Books","Games","Courses"];
     const [category,setCategory] = useState("Books");
 
     useEffect(() => {
-        if(!isLoggedIn){
+        if (!window.sessionStorage.getItem('login')) { 
             props.history.push('/login');
+            return;
         }
-    },[]);
+        const login = JSON.parse(window.sessionStorage.getItem('login'))
+        console.log(login.user.id)
+
+        axios.get('/fsz/api/users/', {
+            headers: { 'x-auth-token': login.token }
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },[props.history]);
 
     return (
         <div style={{position:"relative"}}>
@@ -31,10 +43,4 @@ function Home(props) {
     );
 }
 
-const mapStateToProps = (state) =>{
-    return {
-        isLoggedIn: state.authorizationReducer
-    }
-}
-
-export default connect(mapStateToProps,null)(Home);
+export default Home;

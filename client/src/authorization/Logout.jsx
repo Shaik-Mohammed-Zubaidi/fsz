@@ -1,18 +1,13 @@
-import { connect } from 'react-redux';
-import {logoutTheUser} from '../redux/authorization/actionCreator';
-const axios= require('axios');
+import axios from 'axios';
 
-const Logout = ({logoutTheUser,Games,Books,Courses}) =>{
+const Logout = () =>{
 
     const handleSignout = async() =>{
-        const email= sessionStorage.getItem('email');
-        axios.patch('/api/fsz/user',{
-            email,
-            Games,
-            Books,
-            Courses,
-        }).then(res=>console.log(res)).catch(err=> console.log(err));
-        logoutTheUser();
+
+        axios.patch('/api/fsz/user',{email: "yaya"}).then(res=>console.log(res)).catch(err=> console.log(err));
+        
+        window.sessionStorage.clear();
+        window.location.reload();
     }
 
     return (
@@ -20,14 +15,4 @@ const Logout = ({logoutTheUser,Games,Books,Courses}) =>{
     );
 };
 
-const mapStateToProps = (state) =>{
-    return {
-        Games: state.progressReducer.Games,
-        Books: state.progressReducer.Books,
-        Courses: state.progressReducer.Courses
-    }
-}
-
-export default connect(mapStateToProps,{
-    logoutTheUser,
-})(Logout);
+export default Logout;

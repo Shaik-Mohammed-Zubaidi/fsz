@@ -2,6 +2,7 @@ const router= require('express').Router();
 const bcrypt= require('bcryptjs');
 const jwt= require('jsonwebtoken');
 const User= require('../model/usersModel');
+const auth = require('../middleware/auth');
 
 router.post('/register', async(req,res)=>{
     try {
@@ -9,7 +10,8 @@ router.post('/register', async(req,res)=>{
         const {email, password} = req.body;
         const existingUser = await User.findOne({email: email});
         if(existingUser){
-            return res.status(400).json({message: "User account already exists"});
+            res.status(400).json({message: "User account already exists"});
+            return;
         }
         // encryption for password
         const salt = await bcrypt.genSalt();
@@ -61,5 +63,19 @@ router.post('/login', async(req,res)=>{
 //         }).catch(_=> res.send("err"));
 //     }).catch(_=> res.send("error"));
 // });
+
+router.get('/', auth, async (req, res) => {
+    try {
+      // reading the data from user
+      const user = await User.findById(req.user);
+      res.json({
+        id: user._id,
+        email: user.email,
+        password: user.password
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+});
 
 module.exports= router;

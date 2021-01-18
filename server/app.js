@@ -7,7 +7,7 @@ require('dotenv').config();
 const app= express();
 const PORT= process.env.PORT || 5000;
 
-const whitelist = ['http://localhost:3000']
+const whitelist = ['http://localhost:3000',"http://localhost:6000"]
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -31,4 +31,4 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 
 app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
 
-app.use('/fsz/api/users',cors(corsOptions),require('./routes/user'));
+app.use('/fsz/api/users',require('./routes/user'));

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,54 +10,45 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { connect } from 'react-redux';
 
-import {loginTheUser} from '../redux/authorization/actionCreator';
-import {setInitialState} from '../redux/progress/actionCreator';
 import {useStyles,isValid} from './utils';
-const axios= require('axios');
+import axios from 'axios';
 
 function Login(props) {
-    const {isLoggedIn,loginTheUser,setInitialState}= props;
     const classes = useStyles();
     const [email,setEmail]= useState("");
-    const [pass,setPass]= useState("");
+    const [password,setPassword]= useState("");
     const [errorMessage,setErrorMessage]= useState("");
-
-    const verifyUser = () =>{
-        const data= axios.get(`/api/fsz/user?email=${email}`);
-        data
-            .then(res=> {
-                let receivedUser= res.data[0];
-                if(receivedUser.password!==pass){
-                    setErrorMessage("Incorrect Password");
-                }
-                else{
-                    loginTheUser();
-                    const {Games,Books,Courses} = receivedUser.data;
-                    setInitialState({
-                        Games,
-                        Books,
-                        Courses,
-                    });
-                    sessionStorage.setItem('email',receivedUser.email);
-                    setErrorMessage("");
-                    props.history.push('/home');
-                }
-            }).catch(err=> console.log(err));
-    }
 
     const handleLogin = (e) =>{
         e.preventDefault();
-        if(!isValid(email,pass,setErrorMessage)){
+        if(!isValid(email,password,setErrorMessage)){
             return;
         }
-        verifyUser();
+        setErrorMessage("");
+        axios.post('/fsz/api/users/login',{
+            email,
+            password,
+        })
+            .then(response=>{
+                setErrorMessage("");
+                if (response.status === 200) {
+                    window.sessionStorage.setItem('login', JSON.stringify(response.data));
+                    props.history.push('/home');
+                }
+                console.log(response.data);
+            })
+            .catch(({response})=> {
+                setErrorMessage(response.data.message)
+            });
     }
 
-    if(isLoggedIn){
-        props.history.push('/home');
-    }
+    useEffect(()=>{
+        if(window.sessionStorage.getItem("login")){
+            props.history.push('/home');
+            return;
+        }
+    },[props.history]);
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -86,8 +77,8 @@ function Login(props) {
                             autoFocus
                         />
                         <TextField
-                            value={pass}
-                            onChange={(e)=>setPass(e.target.value)}
+                            value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
                             variant="outlined"
                             margin="normal"
                             required
@@ -128,13 +119,4 @@ function Login(props) {
     );
 }
 
-const mapStateToProps = (state) =>{
-    return {
-        isLoggedIn: state.authorizationReducer
-    }
-}
-
-export default connect(mapStateToProps,{
-    loginTheUser,
-    setInitialState,
-})(Login);
+export default Login;

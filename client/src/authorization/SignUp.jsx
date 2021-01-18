@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,15 +8,11 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { connect } from 'react-redux';
 
-import { loginTheUser } from '../redux/authorization/actionCreator';
 import {useStyles,isValid} from './utils';
-const axios= require('axios');
+import axios from 'axios';
 
 function SignUp(props) {
-    const {loginTheUser,isLoggedIn} = props;
-
     const classes = useStyles();
     const [fname,setFname]= useState("");
     const [lname,setLname]= useState("");
@@ -24,36 +20,34 @@ function SignUp(props) {
     const [pass,setPass]= useState("");
     const [errorMessage,setErrorMessage]= useState("");
 
-    const createAccount = async() =>{
-        let user= {
-            firstName: fname,
-            lastName: lname,
-            email: email,
-            password: pass,
-            data: {
-                Books: 0,
-                Games: 0,
-                Courses: 0,
-            }
-        }
-        const data= axios.post('api/fsz/user',user);
-        data.then(res=> console.log("User Created", res)).catch(err=> console.log(err));
-    }
-
     const handleSignUp = (e) =>{
         e.preventDefault();
         if(!isValid(email,pass,setErrorMessage)){
             return;
         }
-        createAccount().then(_=>{
-            loginTheUser();
-            props.history.push('/home');
-        });
+        let user= {
+            firstName: fname,
+            lastName: lname,
+            email: email,
+            password: pass
+        }
+        setErrorMessage("");
+        axios.post('/fsz/api/users/register',user)
+            .then(response=>{
+                console.log(response.data);
+                setErrorMessage("");
+                props.history.push('/login');
+            }).catch(({response})=> {
+                setErrorMessage(response.data.message);
+            });
     }
 
-    if(isLoggedIn){
-        props.history.push('/home');
-    }
+    useEffect(()=>{
+        if(window.sessionStorage.getItem("login")){
+            props.history.push('/home');
+            return;
+        }
+    },[props.history]);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -145,12 +139,4 @@ function SignUp(props) {
     );
 }
 
-const mapStateToProps = (state) =>{
-    return {
-        isLoggedIn: state.authorizationReducer
-    }
-}
-
-export default connect(mapStateToProps,{
-    loginTheUser,
-})(SignUp);
+export default SignUp;
