@@ -1,35 +1,34 @@
 const express= require('express');
-const usersModel= require('./model/usersModel');
+const mongoose = require("mongoose");
+const cors= require('cors');
+const bodyParser= require('body-parser');
+require('dotenv').config();
 
 const app= express();
+const PORT= process.env.PORT || 5000;
 
-app.use(express.json());
+const whitelist = ['http://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
-app.post('/api/fsz/user',(req,res)=>{
-    const user= new usersModel({...req.body});
+app.use(cors());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
 
-    user.save().then(val=>res.send(val)).catch(err=>console.log(err));
-});
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(_=> console.log("Connected to MongoDB")).catch(err=> console.log("Exception Occured",err));
 
-app.patch('/api/fsz/user',(req,res)=>{
-    const user= req.body;
-    const {email,Books, Games, Courses} = user;
-    usersModel.find({email}).then(userPresent=>{
-        usersModel.findByIdAndUpdate(userPresent.id,{Books, Games, Courses}).then(_=>{
-            res.send("done broo");
-        }).catch(_=> res.send("err"));
-    }).catch(_=> res.send("error"));
-});
+app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
 
-app.get('/api/fsz/user',(req,res)=>{
-    const user= req.query;
-    usersModel.find(user).then(result=>{
-        res.json(result);
-    }).catch(err=>{
-        res.send("error");
-        console.log(err);
-    });
-});
-
-
-module.exports= app;
+app.use('/fsz/api/users',cors(corsOptions),require('./routes/user'));

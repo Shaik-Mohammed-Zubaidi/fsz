@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Box} from "@material-ui/core";
 import Categories from "./Categories";
 import Feed from "./Feed";
@@ -12,9 +12,11 @@ function Home(props) {
     const categoriesList= ["Books","Games","Courses"];
     const [category,setCategory] = useState("Books");
 
-    if(!isLoggedIn){
-        props.history.push('/login');
-    }
+    useEffect(() => {
+        if(!isLoggedIn){
+            props.history.push('/login');
+        }
+    },[]);
 
     return (
         <div style={{position:"relative"}}>
