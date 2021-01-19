@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 router.post('/register', async(req,res)=>{
     try {
         // reading data from the user
-        const {email, password} = req.body;
+        const {firstName, lastName, email, password, admin} = req.body;
         const existingUser = await User.findOne({email: email});
         if(existingUser){
             res.status(400).json({message: "User account already exists"});
@@ -19,6 +19,9 @@ router.post('/register', async(req,res)=>{
         console.log("passwordHash: ", passwordHash);
 
         const newUser = new User({
+            admin,
+            firstName,
+            lastName,
             email,
             password: passwordHash,
             progress: {
@@ -52,6 +55,8 @@ router.post('/login', async(req,res)=>{
             token,
             user: {
                 id: existingUser._id,
+                userName: existingUser.firstName + " "+ existingUser.lastName,
+                admin: existingUser.admin,
                 books: existingUser.progress.books,
                 games: existingUser.progress.games,
                 courses: existingUser.progress.courses,
@@ -82,6 +87,7 @@ router.get('/', auth, async (req, res) => {
       const user = await User.findById(req.user);
       res.json({
         id: user._id,
+        admin: user.admin,
         email: user.email,
         password: user.password,
         progress: user.progress

@@ -1,6 +1,7 @@
 const mongoose= require('mongoose');
 
 const usersSchema= new mongoose.Schema({
+    admin: Boolean,
     firstName: String,
     lastName: String,
     email: String,

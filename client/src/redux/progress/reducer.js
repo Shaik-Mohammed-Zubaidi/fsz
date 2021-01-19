@@ -23,7 +23,7 @@ export default function myReducer(state= INIT_STATE, action){
             if(state.games.length>0){
                 return {
                     ...state,
-                    games: state.games.filter(game=> game.id!== action.payload),
+                    games: state.games.filter(game=> game.title!== action.payload),
                 }
             }
             return state;
@@ -38,7 +38,7 @@ export default function myReducer(state= INIT_STATE, action){
             if(state.books.length>0){
                 return {
                     ...state,
-                    books: state.books.filter(book=> book.id!== action.payload),
+                    books: state.books.filter(book=> book.title!== action.payload),
                 }
             }
             return state;
@@ -53,7 +53,7 @@ export default function myReducer(state= INIT_STATE, action){
             if(state.courses.length>0){
                 return {
                     ...state,
-                    courses: state.courses.filter(course=> course.id!== action.payload),
+                    courses: state.courses.filter(course=> course.title!== action.payload),
                 }
             }
             return state;

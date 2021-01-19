@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Box} from "@material-ui/core";
+import axios from 'axios';
+import { connect } from 'react-redux';
+
 import Categories from "./Categories";
 import Feed from "./Feed";
 import Progress from "./Progress";
 import Header from './Header';
 import Logout from '../authorization/Logout';
-import axios from 'axios';
-import { connect } from 'react-redux';
 
 import {setInitialState} from '../redux/progress/actionCreator';
 

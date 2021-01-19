@@ -1,21 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {addBook,removeBook} from '../../redux/progress/actionCreator';
 
 const Book = (props) =>{
-    const {book, addBook, removeBook,id}= props;
+    const {book, addBook, removeBook,name, books}= props;
     const {title,description,link}= book;
     const [isRead,setIsRead] = useState(false);
 
     const handleRead = () =>{
         if(isRead){
-            removeBook(id);
+            removeBook(title);
         }
         else{
-            addBook({id,title});
+            addBook({title});
         }
         setIsRead(prevState => !prevState);
     }
+
+    useEffect(()=>{
+        books.forEach(book=>{
+            if(book.title===name){
+                setIsRead(true);
+            }
+        });
+    },[]);
 
     return (
         <div className="book flex">
@@ -27,7 +35,13 @@ const Book = (props) =>{
     );
 };
 
-export default connect(null,{
+const mapStateToProps = (state) =>{
+    return {
+        books: state.progressReducer.books
+    }
+}
+
+export default connect(mapStateToProps,{
     addBook,
     removeBook,
 })(Book);

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import {addGame, removeGame} from '../../../redux/progress/actionCreator';
 
-const Tictactoe = ({addGame,removeGame,id,games}) =>{
+const Tictactoe = ({addGame,removeGame,name,games}) =>{
     const [isStarted,setIsStarted]= useState(false);
     const [pl1Input,setPl1Input] = useState("");
     const [pl2Input,setPl2Input] = useState("");
@@ -15,7 +15,7 @@ const Tictactoe = ({addGame,removeGame,id,games}) =>{
     
     useEffect(()=>{
         games.forEach(game=>{
-            if(game.id===id){
+            if(game.title===name){
                 setIsPlayed(true);
             }
         });
@@ -23,11 +23,11 @@ const Tictactoe = ({addGame,removeGame,id,games}) =>{
 
     const handlePlayed = () =>{
         if(isPlayed){
-            removeGame(id);
+            removeGame(name);
         }
         else{
             console.log("add game before");
-            addGame({id,title: "TicTacToe"});
+            addGame({title: "TicTacToe"});
             console.log(games);
         }
         setIsPlayed(prevState => !prevState);

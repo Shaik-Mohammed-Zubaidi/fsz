@@ -33,3 +33,4 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
 app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
 
 app.use('/fsz/api/users',require('./routes/user'));
+app.use('/fsz/api/admin',require('./routes/admin'));
