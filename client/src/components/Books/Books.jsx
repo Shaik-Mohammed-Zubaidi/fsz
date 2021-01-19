@@ -7,6 +7,7 @@ import "./books.css";
 const Books = () => {
   const login = JSON.parse(window.sessionStorage.getItem('login'));
   const [booksList, setBooksList] = useState([]);
+
   useEffect(()=>{
     axios.get('fsz/api/admin/books')
       .then(response=> {
@@ -15,7 +16,8 @@ const Books = () => {
       })
       .catch(({response})=> console.log(response.data));
   },[]);
-  return <div className="flex" >
+
+return <div className="flex" >
       {login && login.user.admin && <AddItem category={"Book"} />}
       {booksList.map((book,i)=> <Book key={book.title+i} name={book.title} book={book} />)}
   </div>;
