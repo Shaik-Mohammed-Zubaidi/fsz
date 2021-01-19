@@ -46,9 +46,9 @@ function Progress({gamesPlayed, booksRead, coursesCompleted}) {
 
 const mapStateToProps = (state) =>{
     return {
-        gamesPlayed: state.progressReducer.Games,
-        booksRead: state.progressReducer.Books,
-        coursesCompleted: state.progressReducer.Courses
+        gamesPlayed: state.progressReducer.games.length,
+        booksRead: state.progressReducer.books.length,
+        coursesCompleted: state.progressReducer.courses.length,
     }
 }
 

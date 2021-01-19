@@ -3,7 +3,7 @@ import progressReducer from './progress/reducer';
 
 const rootReducer = combineReducers({
     progressReducer,
-})
+});
 
 const store= createStore(rootReducer);
 

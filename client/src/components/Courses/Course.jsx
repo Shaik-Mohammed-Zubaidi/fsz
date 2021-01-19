@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import {incrementCourses,decrementCourses} from '../../redux/progress/actionCreator';
+import {addCourse,removeCourse} from '../../redux/progress/actionCreator';
 
 const Course = (props) =>{
-    const {course,incrementCourses,decrementCourses}= props;
+    const {course,addCourse,removeCourse,id}= props;
     const {title,description,video}= course;
     const [isCompleted, setIsCompleted] = useState(false);
 
     const handleComplete = () =>{
         if(isCompleted){
-            decrementCourses();
+            removeCourse(id);
         }
         else{
-            incrementCourses();
+            addCourse({id,title});
         }
         setIsCompleted(prevState => !prevState);
     }
@@ -27,6 +27,6 @@ const Course = (props) =>{
     );
 };
 export default connect(null,{
-    incrementCourses,
-    decrementCourses
+    addCourse,
+    removeCourse
 })(Course);

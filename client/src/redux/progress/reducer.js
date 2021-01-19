@@ -1,9 +1,9 @@
 import * as actionConstants from './actionConstants';
 
 const INIT_STATE= {
-    Games: 0, 
-    Books: 0, 
-    Courses: 0,
+    games: [], 
+    books: [], 
+    courses: [],
 }
 
 export default function myReducer(state= INIT_STATE, action){
@@ -13,47 +13,47 @@ export default function myReducer(state= INIT_STATE, action){
                 ...state,
                 ...action.payload,
             };
-        case actionConstants.INCREMENT_GAMES:
+        case actionConstants.ADD_GAME:
             return {
                 ...state,
-                Games: state.Games+1,
+                games: [...state.games,action.payload],
             }
         
-        case actionConstants.DECREMENT_GAMES:
-            if(state.Games>0){
+        case actionConstants.REMOVE_GAME:
+            if(state.games.length>0){
                 return {
                     ...state,
-                    Games: state.Games-1,
+                    games: state.games.filter(game=> game.id!== action.payload),
                 }
             }
             return state;
         
-        case actionConstants.INCREMENT_BOOKS:
+        case actionConstants.ADD_BOOK:
             return {
                 ...state,
-                Books: state.Books+1,
+                books: [...state.books,action.payload],
             }
         
-        case actionConstants.DECREMENT_BOOKS:
-            if(state.Books>0){
+        case actionConstants.REMOVE_BOOK:
+            if(state.books.length>0){
                 return {
                     ...state,
-                    Books: state.Books-1,
+                    books: state.books.filter(book=> book.id!== action.payload),
                 }
             }
             return state;
         
-        case actionConstants.INCREMENT_COURSES:
+        case actionConstants.ADD_COURSE:
             return {
                 ...state,
-                Courses: state.Courses+1,
+                courses: [...state.courses,action.payload],
             }
         
-        case actionConstants.DECREMENT_COURSES:
-            if(state.Courses>0){
+        case actionConstants.REMOVE_COURSE:
+            if(state.courses.length>0){
                 return {
                     ...state,
-                    Courses: state.Courses-1,
+                    courses: state.courses.filter(course=> course.id!== action.payload),
                 }
             }
             return state;

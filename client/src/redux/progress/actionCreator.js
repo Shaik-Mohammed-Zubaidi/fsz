@@ -7,38 +7,44 @@ export const setInitialState = (receivedState) =>{
     }
 };
 
-export const incrementGames = () =>{
+export const addGame = (receivedVal) =>{
     return {
-        type: actionConstants.INCREMENT_GAMES,
+        type: actionConstants.ADD_GAME,
+        payload: receivedVal
     }
 };
 
-export const decrementGames= () =>{
+export const removeGame= (receivedVal) =>{
     return {
-        type: actionConstants.DECREMENT_GAMES,
+        type: actionConstants.REMOVE_GAME,
+        payload: receivedVal
     }
 };
 
-export const incrementBooks = () =>{
+export const addBook = (receivedVal) =>{
     return {
-        type: actionConstants.INCREMENT_BOOKS,
+        type: actionConstants.ADD_BOOK,
+        payload: receivedVal
     }
 };
 
-export const decrementBooks = () =>{
+export const removeBook = (receivedVal) =>{
     return {
-        type: actionConstants.DECREMENT_BOOKS,
+        type: actionConstants.REMOVE_BOOK,
+        payload: receivedVal
     }
 };
 
-export const incrementCourses = () =>{
+export const addCourse = (receivedVal) =>{
     return {
-        type: actionConstants.INCREMENT_COURSES,
+        type: actionConstants.ADD_COURSE,
+        payload: receivedVal
     }
 };
 
-export const decrementCourses = () =>{
+export const removeCourse = (receivedVal) =>{
     return {
-        type: actionConstants.DECREMENT_COURSES,
+        type: actionConstants.REMOVE_COURSE,
+        payload: receivedVal
     }
 };

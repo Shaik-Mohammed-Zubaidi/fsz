@@ -6,8 +6,12 @@ import Progress from "./Progress";
 import Header from './Header';
 import Logout from '../authorization/Logout';
 import axios from 'axios';
+import { connect } from 'react-redux';
+
+import {setInitialState} from '../redux/progress/actionCreator';
 
 function Home(props) {
+    const {setInitialState} = props;
     const categoriesList= ["Books","Games","Courses"];
     const [category,setCategory] = useState("Books");
 
@@ -16,8 +20,14 @@ function Home(props) {
             props.history.push('/login');
             return;
         }
-        const login = JSON.parse(window.sessionStorage.getItem('login'))
-        console.log(login.user.id)
+        const login = JSON.parse(window.sessionStorage.getItem('login'));
+        console.log(login.user.id);
+        const {books,games,courses} = login.user;
+        setInitialState({
+            books,
+            games,
+            courses
+        });
 
         axios.get('/fsz/api/users/', {
             headers: { 'x-auth-token': login.token }
@@ -43,4 +53,6 @@ function Home(props) {
     );
 }
 
-export default Home;
+export default connect(null,{
+    setInitialState,
+})(Home);

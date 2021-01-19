@@ -5,8 +5,13 @@ const usersSchema= new mongoose.Schema({
     lastName: String,
     email: String,
     password: String,
+    progress: {
+        books: [],
+        games: [],
+        courses: []
+    }
 });
 
-const User= mongoose.model('usersDetails',usersSchema);;
+const User= mongoose.model('usersDetails',usersSchema);
 
 module.exports= User;

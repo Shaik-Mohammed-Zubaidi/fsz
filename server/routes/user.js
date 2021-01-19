@@ -20,7 +20,12 @@ router.post('/register', async(req,res)=>{
 
         const newUser = new User({
             email,
-            password: passwordHash
+            password: passwordHash,
+            progress: {
+                books: [],
+                games: [],
+                courses: []
+            }
         }) 
         const savedUser=  newUser.save();
         res.json(savedUser);
@@ -46,7 +51,10 @@ router.post('/login', async(req,res)=>{
         res.json({
             token,
             user: {
-                id: existingUser._id
+                id: existingUser._id,
+                books: existingUser.progress.books,
+                games: existingUser.progress.games,
+                courses: existingUser.progress.courses,
             }
         });
     } catch (error) {
@@ -54,15 +62,19 @@ router.post('/login', async(req,res)=>{
     }
 });
 
-// router.patch('/update',(req,res)=>{
-//     const user= req.body;
-//     const {email,Books, Games, Courses} = user;
-//     usersModel.find({email}).then(userPresent=>{
-//         usersModel.findByIdAndUpdate(userPresent.id,{Books, Games, Courses}).then(_=>{
-//             res.send("done broo");
-//         }).catch(_=> res.send("err"));
-//     }).catch(_=> res.send("error"));
-// });
+router.patch('/update',(req,res)=>{
+    const {id, games, books, courses}= req.body;
+    User.findByIdAndUpdate({_id: id},{progress: {games,books,courses}})
+        .then((user)=>{
+            user.progress.books= books,
+            user.progress.games= games,
+            user.progress.courses= courses,
+            res.json({message: "done"});
+        })
+        .catch(()=>{
+            res.status(404).json({message: "No such user"});
+        })
+});
 
 router.get('/', auth, async (req, res) => {
     try {
@@ -71,7 +83,8 @@ router.get('/', auth, async (req, res) => {
       res.json({
         id: user._id,
         email: user.email,
-        password: user.password
+        password: user.password,
+        progress: user.progress
       });
     } catch (err) {
       res.status(500).json({ error: err.message });

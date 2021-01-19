@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import {incrementBooks,decrementBooks} from '../../redux/progress/actionCreator';
+import {addBook,removeBook} from '../../redux/progress/actionCreator';
 
 const Book = (props) =>{
-    const {book, incrementBooks, decrementBooks}= props;
+    const {book, addBook, removeBook,id}= props;
     const {title,description,link}= book;
     const [isRead,setIsRead] = useState(false);
 
     const handleRead = () =>{
         if(isRead){
-            decrementBooks();
+            removeBook(id);
         }
         else{
-            incrementBooks();
+            addBook({id,title});
         }
         setIsRead(prevState => !prevState);
     }
@@ -28,6 +28,6 @@ const Book = (props) =>{
 };
 
 export default connect(null,{
-    incrementBooks,
-    decrementBooks,
+    addBook,
+    removeBook,
 })(Book);

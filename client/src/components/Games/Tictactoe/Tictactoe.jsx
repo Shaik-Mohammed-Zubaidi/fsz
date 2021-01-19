@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleTicks } from "./utils";
 import './tictactoe.css';
 import { connect } from "react-redux";
-import {incrementGames,decrementGames} from '../../../redux/progress/actionCreator';
 
-const Tictactoe = ({incrementGames,decrementGames}) =>{
+import {addGame, removeGame} from '../../../redux/progress/actionCreator';
+
+const Tictactoe = ({addGame,removeGame,id,games}) =>{
     const [isStarted,setIsStarted]= useState(false);
     const [pl1Input,setPl1Input] = useState("");
     const [pl2Input,setPl2Input] = useState("");
@@ -12,12 +13,22 @@ const Tictactoe = ({incrementGames,decrementGames}) =>{
     const [board,setBoard] = useState(new Array(3).fill("").map(() => new Array(3).fill("")));
     const [isPlayed, setIsPlayed] = useState(false);
     
+    useEffect(()=>{
+        games.forEach(game=>{
+            if(game.id===id){
+                setIsPlayed(true);
+            }
+        });
+    },[]);
+
     const handlePlayed = () =>{
         if(isPlayed){
-            decrementGames();
+            removeGame(id);
         }
         else{
-            incrementGames();
+            console.log("add game before");
+            addGame({id,title: "TicTacToe"});
+            console.log(games);
         }
         setIsPlayed(prevState => !prevState);
     }
@@ -44,7 +55,13 @@ const Tictactoe = ({incrementGames,decrementGames}) =>{
     );
 };
 
-export default connect(null,{
-    incrementGames,
-    decrementGames
+const mapStateToProps = (state) =>{
+    return {
+        games: state.progressReducer.games
+    }
+}
+
+export default connect(mapStateToProps,{
+    addGame,
+    removeGame
 })(Tictactoe);
