@@ -4,7 +4,8 @@
     background-color: rgb(238, 243, 171);
     margin-bottom: 8px;
     padding: 10px 6px 10px 6px;
-    height: 40vh;
+    height: 45vh;
+    width: 50vw;
     position: relative;
 }
 
@@ -19,7 +20,7 @@
 
 .completed{
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 3px;
+    right: 5px;
     border-radius: 4px;
 }

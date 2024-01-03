@@ -10,14 +10,14 @@
 
 .read{
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 3px;
+    right: 5px;
     border-radius: 4px;
 }
 
-.book>h3{
+/* .book>h3{
     margin: 0;
-}
+} */
 
 .book a{
     text-decoration: none;

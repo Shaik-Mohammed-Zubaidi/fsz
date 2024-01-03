@@ -42,12 +42,14 @@ function Login(props) {
         console.log(response.data);
       })
       .catch(({ response }) => {
-        setErrorMessage(response.data.message);
+        console.log("response", response);
+        setErrorMessage("Something went wrong. Please try again.");
       });
   };
 
   useEffect(() => {
     if (window.sessionStorage.getItem("login")) {
+      console.log("login",props);
       props.history.push("/home");
       return;
     }
