@@ -18,17 +18,13 @@ const corsOptions = {
   }
 }
 
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-}).then(_=> console.log("Connected to MongoDB")).catch(err=> console.log("Exception Occured",err));
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING).then(_=> console.log("Connected to MongoDB")).catch(err=> console.log("Exception Occured",err));
 
 app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
 
